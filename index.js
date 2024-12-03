@@ -2,6 +2,8 @@ const express = require('express')
 const path = require('path')
 const dotenv = require('dotenv')
 const mongoose = require('mongoose')
+const userRoute = require("./routes/user");
+const bodyParser = require('body-parser')
 dotenv.config();
 const PORT = process.env.PORT || 3000
 const app = express()
@@ -10,6 +12,11 @@ app.use(express.static(path.join(__dirname, "public")))
 app.get('/', (req, res)=>{
     res.sendFile(path.join(__dirname, " public", "try.html"));
 })
+
+app.use(express.json());
+app.use(express.urlencoded({extended : true}));
+app.use(bodyParser.json())
+app.use('/api/user', userRoute)
 
 app.listen(PORT, ()=>{
     console.log("Server is running on port 3000")
@@ -22,3 +29,4 @@ app.listen(PORT, ()=>{
         console.log(err)
     })
 });
+

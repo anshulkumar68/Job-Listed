@@ -6,6 +6,16 @@ const authMiddleware = require("../middleware/auth");
 dotenv.config();
 
 router.get("/", async (req, res) => {
+  const { limit, offset, salary, companyName, name } = req.query;
+  const query = {};
+  if(salary){
+    query.salary = {$gte : salary, $lte : salary}
+  }
+  if(name){
+    query.companyName = {$regex : name, $options : "i"}
+  }
+  const jobs = await Job.find(query).skip(offset).limit(limit);
+  res.status(200).json(jobs)
   // const jobs = await Job.find();
   // res.status(200).json(jobs);
   // const {limit, offset, salary, companyName} = req.query;
@@ -19,15 +29,15 @@ router.get("/", async (req, res) => {
   // const jobs = await Job.find({salary :{$gte:15000}}).limit(limit).skip(offset)
 
   // get the job which includes company name = companyname and salary = salary
-//   try {
-//     const { limit, offset, salary, companyName } = req.query;
-//     const jobs = await Job.find({companyName : "Honeywell", salary:13000})
-//       .limit(limit)
-//       .skip(offset);
-//     res.status(200).json(jobs);
-//   } catch (err) {
-//     console.log(err);
-//   }
+  // try {
+   
+  //   const jobs = await Job.find({companyName : "Honeywell" || "", salary:13000 || ""})
+  //     .limit(limit || 10)
+  //     .skip(offset || 0);
+  //   res.status(200).json(jobs);
+  // } catch (err) {
+  //   console.log(err);
+  // }
 
   // make it so that it can search by company name and job position and  salary and job type
 //   try{

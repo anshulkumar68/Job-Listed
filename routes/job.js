@@ -14,7 +14,7 @@ router.get("/", async (req, res) => {
   if(name){
     query.companyName = {$regex : name, $options : "i"}
   }
-  const jobs = await Job.find(query).skip(offset).limit(limit);
+  const jobs = await Job.find(query).skip(offset || 0).limit(limit || 50);
   res.status(200).json(jobs)
   // const jobs = await Job.find();
   // res.status(200).json(jobs);

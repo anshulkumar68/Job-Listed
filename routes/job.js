@@ -15,7 +15,8 @@ router.get("/", async (req, res) => {
     query.companyName = {$regex : name, $options : "i"}
   }
   const jobs = await Job.find(query).skip(offset).limit(limit);
-  res.status(200).json(jobs)
+  const count = await Job.countDocuments(query);
+  res.status(200).json({jobs, count})
   // const jobs = await Job.find();
   // res.status(200).json(jobs);
   // const {limit, offset, salary, companyName} = req.query;
